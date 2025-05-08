@@ -1,0 +1,182 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #202020;
+}
+#coordinates {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #000;
+    padding: 2px;
+    border-radius: 3px;
+    pointer-events: none;
+    /* Kezdeti pozíció */
+    left: 10px; 
+    top: 10px;  
+}
+
+h1 {
+    text-align: center;
+    padding: 20px;
+}
+
+button {
+    margin: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #cccccc;
+}
+
+select, input[type="number"], input[type="color"] {
+    margin: 5px;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+canvas {
+    border: 1px solid black;
+    display: block;
+    margin: 20px auto;
+    background: #ffffff;
+}
+
+#myModal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+#myModal h2 {
+    margin-top: 0;
+}
+
+#rotateAngleInput {
+    width: 60px;
+}
+
+#saveButton,
+#simpleSave,
+#saveDFX {
+    background-color: #27ae60;
+}
+
+#resetFill {
+    background-color: #A20AC0;
+}
+
+#egyenesVonalGomb,
+#szaggatottVonalGomb {
+    background-color: #f39c12;
+}
+
+#current_canvas,
+#shapesContent {
+    text-align: center;
+    margin-top: 10px;
+}
+#selectedDelete,
+#indexDelete,
+#allDelete{
+    background-color: #D51818;
+}
+
+/* adatok a shapes-ek ről*/
+.current_canvas,
+.shapesContent1{
+    color: white;
+}
+
+
+.Cim {
+    color: white;
+}
+
+/*kis betű a file betöltése mellett*/
+.file-select {
+    color: white;
+}
+
+
+/*ne essen össze ha zoomolok */
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Left-align the buttons */
+    margin: 10px; /* Add some margin for spacing */
+}
+
+.buttons-container:nth-child(2) {
+    align-items: center; /* Center-align the middle container (drawButtons) */
+}
+
+.buttons-container:nth-child(3) {
+    align-items: flex-end; /* Right-align the last container (operationButtons) */
+}
+@media (max-width: 768px) {
+    .buttons-container {
+        align-items: center; /* Center-align buttons vertically */
+    }
+
+    canvas {
+        margin: 10px auto; /* Add more margin to canvas for spacing */
+    }
+}
+
+/* Position the save buttons in the top-left corner */
+.save-buttons-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 10px;
+}
+
+/* Create a container to hold the canvas and surrounding buttons */
+.canvas-container {
+    display: flex;
+    justify-content: space-between; /* Space out the containers */
+    align-items: center;
+    margin: 20px;
+}
+
+/* Apply Flexbox layout for draw and operation buttons */
+.draw-buttons-container,
+.operation-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center-align the buttons vertically */
+    width: 150px; /* Adjust the width as needed */
+}
+
+@media (max-width: 768px) {
+    /* Adjust layout for smaller screens */
+    .canvas-container {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+    }
+
+    .draw-buttons-container,
+    .operation-buttons-container {
+        width: 100%; /* Expand the width to full width */
+    }
+}

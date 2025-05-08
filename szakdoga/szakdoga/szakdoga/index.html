@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Alakzatok Rajzolása</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<h1 class="Cim">online paint</h1>
+<!-- letöltés/betöltés -->
+<div class="save-buttons-container">
+    <div class="buttons-container" id="saveButtons">
+        <button onclick="downloadCanvas()" id="simpleSave">Rajz letöltése</button>
+
+        <input type="file" class="file-select" id="fileInput" accept=".png, .jpg, .jpeg" />
+        <button onclick="loadImage()">Rajz betöltése</button>
+
+        <button id="saveButton">Mentés(.json)</button>
+        <input type="file" class="file-select" id="loadInput" accept=".json">
+            <!--<button id="saveDFX">Save as DFX</button>-->
+    </div>
+</div>
+    <!-- rajzmódválasztás -->
+<div class="canvas-container">
+    <div class="draw-buttons-container">
+        <div class="buttons-container" id="drawButtons">
+            <button onclick="setDrawingMode('line')">Vonal</button>
+            <button onclick="setDrawingMode('circle')">Kör</button>
+            <button onclick="setDrawingMode('ellipse')">Elipszis</button>
+            <button onclick="setDrawingMode('right_triangle')">Háromszög</button>
+            <button onclick="setDrawingMode('customTriangle')">Háromszög (Bármelyik)</button>
+            <button onclick="setDrawingMode('square')">Négyzet</button>
+            <button onclick="setDrawingMode('rectangle')">Téglalap</button>
+            <button onclick="setDrawingMode('pentagon')">Ötszög</button>
+            <button onclick="setDrawingMode('hexagon')">Hatágú</button>
+            <button onclick="setDrawingMode('octagon')">Nyolctágú</button>
+            <button onclick="setDrawingMode('freehand')">Szabadkézi</button>
+            <!-- egér coordinátáihoz -->
+            <button onclick="setMouseCoord()">coordináták az egérre</button>
+            <!--button id="toggleButtonForMouseCoord"> koordináta az egérre</button -->
+
+            <!-- coordináta bekéeésre alakzat rajz-->
+            <label for="shape">Válasszon rajzolni kívánt alakzatot:</label>
+            <select id="shape">
+                <option value="line">Vonal</option>
+                <option value="circle">Kör</option>
+                <option value="ellipse">ellipszis</option>
+                <option value="right_triangle">derékszögű háromszög</option>
+                <option value="triangle">háromszög</option>
+                <option value="square">négyzet</option>
+                <option value="rectangle">négyzet</option>
+                <option value="pentagon">pentagon</option>
+                <option value="hexagon">hexagon</option>
+                <option value="octagon">octagon</option>
+            </select>
+            <button onclick="openModal()">Rajzolás</button>
+
+            <div id="myModal" style="display: none;">
+                <h2>Adja meg az alakzat koordinátáit:</h2>
+                <label for="startX">Pont 1 X:</label>
+                <input type="number" id="startX" required>
+                <label for="startY">Pont 1 Y:</label>
+                <input type="number" id="startY" required>
+                <br>
+                <label for="endX">Pont 2 X:</label>
+                <input type="number" id="endX" required>
+                <label for="endY">Pont 2 Y:</label>
+                <input type="number" id="endY" required>
+                <br>
+                <label for="point3X">Pont 3 X:</label>
+                <input type="number" id="point3X" required>
+                <label for="point3Y">Pont 3 Y:</label>
+                <input type="number" id="point3Y" required>
+                <br>
+                <button onclick="drawShape()">Rajzolás</button>
+            </div>
+        </div>
+    </div>
+
+
+<!-- canvas -->
+<canvas id="canvas" width="800" height="600" style="border: 1px solid black;"></canvas>
+<!-- egér melleti koordináták kiírása -->
+<div id="coordinates">Koordináták: (x, y)</div>
+
+<!-- kijelölés -->
+    <div class="operation-buttons-container">
+        <div class="buttons-container" id="operationButtons">
+            <input type="text" id="textInput">
+            <button onclick="addText()">Hozzáadás</button>
+            <button onclick="deleteSelectedText()">text_törlés</button>
+
+            <button onclick="setDrawingMode('select')">Kijelölés</button>
+            <br>
+            <!-- forgatás -->
+            <label for="rotateAngleInput">Elforgatás szöge (fokban):</label>
+            <input type="number" id="rotateAngleInput" value="0" step="1" />
+            <button id="rotateButton">Elforgatás</button>
+
+
+            <!-- vonalszín -->
+            <label>vonal színének megadása:</label>
+            <input type="color" id="szinPaletta">
+
+            <!-- kitöltőszín -->
+            <label>alakzat kitöltőszínének megadása:</label>
+            <button id="resetFill">kitöltés reset</button>
+            <input type="color" id="fillColorInput">
+
+            <!-- Gombok az egyenes és szaggatott vonalak választásához -->
+                <br>
+                <label>vonal típúsa:</label>
+            <button id="egyenesVonalGomb">Egyenes vonal</button>
+            <button id="szaggatottVonalGomb">Szaggatott vonal</button>
+
+
+            <!-- törlés -->
+                <br>
+                <label>törlés:</label>
+            <button onclick="deleteSelectedShape()" id="selectedDelete">Kijelölt elem törlése</button>
+            <br>
+            <label for="deleteIndexInput">Törlendő alakzat indexe:</label>
+            <input type="number" id="deleteIndexInput" value="0" step="1" />
+            <button onclick="deleteShapebyindex()" id="indexDelete">idalapú törlés</button>
+            <br>
+            <button onclick="clearCanvas()" id="allDelete">Minden törlése</button>
+        </div>
+    </div>
+</div>
+
+<div id="current_canvas" class="current_canvas"></div>
+<div id="shapesContent" class="shapesContent1"></div>
+<script src="script.js"></script>
+</body>
+</html>

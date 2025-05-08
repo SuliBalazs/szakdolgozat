@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Alakzatok Rajzolása</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<h1 class="Cim">Geometriai oktatószoftver fejlsztés</h1>
+<!-- letöltés/betöltés -->
+<div class="save-buttons-container">
+    <div class="buttons-container" id="saveButtons">
+        <button id="simpleSave">Rajz letöltése</button>
+
+        <input type="file" class="file-select" id="fileInput" accept=".png, .jpg, .jpeg" />
+        <button id="loadImageButton">Rajz betöltése</button>
+
+        <button id="saveButton">Mentés(.json)</button>
+        <input type="file" class="file-select" id="loadInput" accept=".json">
+            <!--<button id="saveDFX">Save as DFX</button>-->
+    </div>
+</div>
+<!-- rajzmódválasztás -->
+<div id="customModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p id="modalText"></p>
+    </div>
+  </div>
+  
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  
+    .modal-content {
+      background-color: white;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 300px;
+      text-align: center;
+    }
+  
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+  
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+    <!-- rajzmódválasztás -->
+<div class="canvas-container">
+    <div class="draw-buttons-container">
+        <div class="buttons-container" id="drawButtons">
+
+            <div class="dropdown">
+                <button id="showTaskMenu">Feladatok</button>
+                <div id="dropdownContent" class="dropdown-content">
+                    <button id="showEasyTaskButton">új kezdő feladat mutatása</button>
+                    <button id="showMediumTaskButton">új haladó feladat mutatása</button>
+                    <button id="checkTaskButton">feladat ellenőrzése (Kijelölt)</button>
+                    <button id="InformationSelectedButton">adatok (Kijelölt)</button>
+                    <button id="showformulaButton">képletek(selected)</button>
+                    <button id="showPremierAndAreaButton">terület kerület (Kijelölt)</button>   
+                </div>
+            </div>
+            <!-- rajzmódválasztás -->           
+            <button id="drawLineButton">Vonal</button>
+            <button id="drawCircleButton">Circle</button>
+            <button id="drawEllipseButton">Elipszis</button>
+            <button id="drawRightTriangleButton">Háromszög</button>
+            <button id="drawCustomTriangleButton">Háromszög (Bármelyik)</button>
+            <button id="drawSquareButton">Négyzet</button>
+            <button id="drawRectangleButton">Téglalap</button>
+            <button id="drawPentagonButton">Ötszög</button>
+            <button id="drawHexagonButton">Hatágú</button>
+            <button id="drawOctagonButton">Nyolctágú</button>
+            <button id="drawFreeHandButton">Szabadkézi</button>
+            <!-- egér coordinátáihoz -->
+            <button id="setCoordOnMouseButton">koordináták az egérre</button>
+            <!--button id="toggleButtonForMouseCoord"> koordináta az egérre</button -->
+
+            <!-- coordináta bekéeésre alakzat rajz-->
+            <label for="shape">Válasszon rajzolni kívánt alakzatot:</label>
+            <select id="shape">
+                <option value="line">Vonal</option>
+                <option value="circle">Kör</option>
+                <option value="ellipse">ellipszis</option>
+                <option value="right_triangle">derékszögű háromszög</option>
+                <option value="triangle">háromszög</option>
+                <option value="square">négyzet</option>
+                <option value="rectangle">négyzet</option>
+                <option value="pentagon">pentagon</option>
+                <option value="hexagon">hexagon</option>
+                <option value="octagon">octagon</option>
+            </select>
+            <button id="openModalButton">Rajzolás</button>
+
+            <div id="myModal" style="display: none;">
+                <h2>Adja meg az alakzat koordinátáit:</h2>
+                <label for="startX">Pont 1 X:</label>
+                <input type="number" id="startX" required>
+                <label for="startY">Pont 1 Y:</label>
+                <input type="number" id="startY" required>
+                <br>
+                <label for="endX">Pont 2 X:</label>
+                <input type="number" id="endX" required>
+                <label for="endY">Pont 2 Y:</label>
+                <input type="number" id="endY" required>
+                <br>
+                <label for="point3X">Pont 3 X:</label>
+                <input type="number" id="point3X" required>
+                <label for="point3Y">Pont 3 Y:</label>
+                <input type="number" id="point3Y" required>
+                <br>
+                <button id="drawShapeButton">Rajzolás</button>
+            </div>
+        </div>
+    </div>
+
+
+<!-- canvas -->
+<canvas id="canvas" width="800" height="600" style="border: 1px solid black;"></canvas>
+<!-- egér melleti koordináták kiírása -->
+<div id="coordinates">Koordináták: (x, y)</div>
+
+<!-- kijelölés -->
+    <div class="operation-buttons-container">
+        <div class="buttons-container" id="operationButtons">
+            <input type="text" id="textInput">
+            <button id="addTextButton">Hozzáadás</button>
+            <button id="deleteSelectedTextButton">text_törlés</button>
+
+            <button id="selectButton">Kijelölés</button>
+            <br>
+            <!-- forgatás -->
+            <label for="rotateAngleInput">Elforgatás szöge (fokban):</label>
+            <input type="number" id="rotateAngleInput" value="0" step="1" />
+            <button id="rotateButton">Elforgatás</button>
+
+
+            <!-- vonalszín -->
+            <label>vonal színének megadása:</label>
+            <input type="color" id="szinPaletta">
+
+            <!-- kitöltőszín -->
+            <label>alakzat kitöltőszínének megadása:</label>
+            <button id="resetFill">kitöltés reset</button>
+            <input type="color" id="fillColorInput">
+
+            <!-- Gombok az egyenes és szaggatott vonalak választásához -->
+                <br>
+                <label>vonal típúsa:</label>
+            <button id="egyenesVonalGomb">Egyenes vonal</button>
+            <button id="szaggatottVonalGomb">Szaggatott vonal</button>
+
+
+            <!-- törlés -->
+                <br>
+                <label>törlés:</label>
+            <button id="deleteSelectedShapeButton">Kijelölt elem törlése</button>
+            <br>
+            <label for="deleteIndexInput">Törlendő alakzat indexe:</label>
+            <input type="number" id="deleteIndexInput" value="0" step="1" />
+            <button id="deletByIndexButton">idalapú törlés</button>
+            <br>
+            <button id="deleteAllButton">Minden törlése</button>
+             <!-- adatok kiírása -->
+            <p id="results" style="font-size: 18px; font-weight: bold; margin-top: 20px;"></p>
+        </div>
+    </div>
+</div>
+
+<div id="current_canvas" class="current_canvas"></div>
+<!-- <div id="shapesContent" class="shapesContent1"></div>  -->
+<script type="module" src="script.js"></script>
+</body>
+</html>
